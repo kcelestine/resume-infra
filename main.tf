@@ -3,7 +3,7 @@ terraform {
     organization = "_cloudcte"
 
     workspaces {
-      name = "aws-terraform-github-actions"
+      name = "resume-infra"
     }
   }
 }
@@ -22,16 +22,24 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+resource "aws_s3_bucket" "bucket" {
+  bucket = "resume.khadijahcamille.com"
 }
-
-resource "aws_vpc" "main2" {
-  cidr_block = "10.1.0.0/16"
+ 
+resource "aws_s3_bucket_public_access_block" "bucket" {
+  bucket = aws_s3_bucket.bucket.id
 }
-
-resource "null_resource" "example" {
-  triggers = {
-    value = "A example resource that does nothing!"
+ 
+resource "aws_s3_bucket_ownership_controls" "bucket" {
+  bucket = aws_s3_bucket.bucket.id
+  rule {
+    object_ownership = "ObjectWriter"
+  }
+}
+ 
+resource "aws_s3_bucket_website_configuration" "bucket" {
+  bucket = aws_s3_bucket.bucket.bucket
+  index_document {
+    suffix = "index.html"
   }
 }
