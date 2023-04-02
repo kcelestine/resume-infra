@@ -36,33 +36,26 @@ resource "aws_s3_bucket_cors_configuration" "example" {
   }
 }
 
-resource "aws_s3_bucket_policy" "bucket-policy" {
-  bucket = data.aws_s3_bucket.selected-bucket.id
-  policy = data.aws_iam_policy_document.iam-policy-1.json
+resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
+  bucket = aws_s3_bucket.selected-bucket.id
+  policy = data.aws_iam_policy_document.allow_access_from_another_account.json
 }
 
-data "aws_iam_policy_document" "iam-policy-1" {
+data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
-    sid    = "AllowPublicRead"
-    effect = "Allow"
-resources = [
-      "arn:aws:s3:::www.${var.domain_name}",
-      "arn:aws:s3:::www.${var.domain_name}/*",
-    ]
-actions = ["S3:GetObject"]
-principals {
-      type        = "*"
-      identifiers = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["123456789012"]
     }
+
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      aws_s3_bucket.selected-bucket.arn,
+      "${aws_s3_bucket.selected-bucket.arn}/*",
+    ]
   }
 }
-
-
-resource "aws_s3_bucket_website_configuration" "website-config" {
-  bucket = data.aws_s3_bucket.selected-bucket.bucket
-index_document {
-    suffix = "index.html"
-  }
-error_document {
-    key = "404.jpeg"
-  }
