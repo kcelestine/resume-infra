@@ -1,51 +1,34 @@
 terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "4.61.0"
-    }
-  }
   cloud {
     organization = "_cloudcte"
 
     workspaces {
-      name = "resume-infra"
+      name = "api"
     }
   }
 }
 
-variable "AWS_ACCESS_KEY_ID" {
-  type        = string
-  description = "AWS_ACCESS_KEY_ID"
-}
-
-variable "AWS_SECRET_ACCESS_KEY" {
-  type        = string
-  description = "AWS_SECRET_ACCESS_KEY"
-}
 
 provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_s3_bucket" "bucket" {
-  bucket = "resume.khadijahcamille.com"
+variable "TFC_AWS_PLAN_ROLE_ARN" {
+  type        = string
+  description = "TFC_AWS_PLAN_ROLE_ARN"
 }
- 
-resource "aws_s3_bucket_public_access_block" "bucket" {
-  bucket = aws_s3_bucket.bucket.id
+
+variable "TFC_AWS_APPLY_ROLE_ARN" {
+  type        = string
+  description = "TFC_AWS_APPLY_ROLE_ARN"
 }
- 
-resource "aws_s3_bucket_ownership_controls" "bucket" {
-  bucket = aws_s3_bucket.bucket.id
-  rule {
-    object_ownership = "ObjectWriter"
-  }
+
+variable "TFC_AWS_RUN_ROLE_ARN" {
+  type        = string
+  description = "TFC_AWS_RUN_ROLE_ARN"
 }
- 
-resource "aws_s3_bucket_website_configuration" "bucket" {
-  bucket = aws_s3_bucket.bucket.bucket
-  index_document {
-    suffix = "index.html"
-  }
+
+variable "TFC_AWS_PROVIDER_AUTH" {
+  default     = true
+  description = "TFC_AWS_PROVIDER_AUTH"
 }
