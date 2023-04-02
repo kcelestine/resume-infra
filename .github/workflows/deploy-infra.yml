@@ -1,4 +1,4 @@
-name: CRC Infro Deployment
+name: CRC Infra Deployment
 
 # This workflow is triggered whenever commits are pushed to the main branch
 on:
