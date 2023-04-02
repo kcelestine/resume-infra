@@ -39,5 +39,6 @@ jobs:
         run: terraform plan
 
       # Runs a set of commands using the runners shell
-      - name: Terraform import
-        run: terraform import aws_s3_bucket.bucket resume.khadijahcamille.com
+      - name: Terraform apply
+        run: terraform apply
+        #run: terraform import aws_s3_bucket.bucket resume.khadijahcamille.com
