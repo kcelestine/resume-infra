@@ -20,6 +20,8 @@ variable "AWS_SECRET_ACCESS_KEY" {
 
 provider "aws" {
   region = "us-east-1"
+  source = "hashicorp/aws"
+  version = "3.74"
 }
 
 resource "aws_s3_bucket" "bucket" {
