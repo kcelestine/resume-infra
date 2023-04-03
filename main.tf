@@ -38,7 +38,7 @@ resource "aws_s3_bucket_cors_configuration" "example" {
 
 resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
   bucket = data.aws_s3_bucket.selected-bucket.id
-  policy = file("templates/s3-policy.json")
+  policy = data.aws_iam_policy_document.allow_access_from_another_account.json
 }
 
 data "aws_iam_policy_document" "allow_access_from_another_account" {
