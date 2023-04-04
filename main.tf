@@ -111,9 +111,19 @@ resource "aws_api_gateway_resource" "countResource" {
   path_part   = "count"
 }
 
-resource "aws_api_gateway_method" "postCount" {
+resource "aws_api_gateway_method" "postCountMethod" {
   rest_api_id   = aws_api_gateway_rest_api.resume_api_gateway.id
   resource_id   = aws_api_gateway_resource.countResource.id
   http_method   = "POST"
   authorization = "NONE"
+}
+
+
+resource "aws_api_gateway_integration" "integration" {
+  rest_api_id             = aws_api_gateway_rest_api.resume_api_gateway.id
+  resource_id             = aws_api_gateway_resource.countResource.id
+  http_method             = aws_api_gateway_method.postCountMethod.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = aws_lambda_function.lambda.invoke_arn
 }
