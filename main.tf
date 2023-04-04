@@ -100,3 +100,7 @@ resource "aws_lambda_function" "lambda" {
     }
   }
 }
+
+resource "aws_api_gateway_rest_api" "resume_api_gateway" {
+  name = "Resume API Gateway"
+}
