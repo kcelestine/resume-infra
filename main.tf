@@ -138,11 +138,4 @@ resource "aws_api_gateway_integration" "lambdapy" {
    uri                     = aws_lambda_function.examplepy.invoke_arn
    passthrough_behavior = "WHEN_NO_TEMPLATES"
    
-   request_templates = {
-    "application/json" = <<EOF
-{
-  "hour" : $input.params('hour')
-  }
-EOF
-  }
 }
