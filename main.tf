@@ -134,6 +134,10 @@ resource "aws_api_gateway_deployment" "deployment" {
    ]
 
    rest_api_id = aws_api_gateway_rest_api.resume_api_gateway.id
-   stage_name  = prod
+   stage_name  = "prod"
 
+}
+
+output "base_url" {
+  value = "${aws_api_gateway_deployment.examplepy.invoke_url}"
 }
