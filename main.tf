@@ -128,8 +128,12 @@ resource "aws_api_gateway_integration" "integration" {
   uri                     = aws_lambda_function.lambda.invoke_arn
 }
 
-resource "aws_api_gateway_deployment" "test" {
-  depends_on  = ["aws_api_gateway_integration.test"]
-  rest_api_id = "${aws_api_gateway_rest_api.test.id}"
-  stage_name  = "dev"
+resource "aws_api_gateway_deployment" "deployment" {
+   depends_on = [
+     aws_api_gateway_integration.integration
+   ]
+
+   rest_api_id = aws_api_gateway_rest_api.resume_api_gateway.id
+   stage_name  = prod
+
 }
